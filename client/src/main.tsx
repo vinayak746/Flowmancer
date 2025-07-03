@@ -16,7 +16,7 @@ createRoot(document.getElementById("root")!).render(
   <StrictMode>
   <ClerkProvider
     publishableKey={PUBLISHABLE_KEY}
-  //  navigate={(to) => window.history.pushState(null, "", to)} 
+   navigate={(to) => window.history.pushState(null, "", to)} 
     >
     <BrowserRouter>
       <App />
