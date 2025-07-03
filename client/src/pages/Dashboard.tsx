@@ -1,34 +1,14 @@
-import { useClerk, UserButton, useUser } from "@clerk/clerk-react";
+import Sidebar from "../components/SIdebar";
+import HeaderStats from "../components/HeaderStats";
 
 const Dashboard = () => {
-  const { isSignedIn, user } = useUser();
-const { openSignIn } = useClerk();
-
-  if (!isSignedIn) return <p>User not signed in</p>;
-
   return (
-    <div>
-      <h1>Welcome {user?.firstName}</h1>
-      <p>Email: {user?.primaryEmailAddress?.emailAddress}</p>
- {!user ? (
-          <button
-            onClick={() => openSignIn()}
-            className="px-4 py-1 sm:px-7 sm:py-2 bg-primary hover:bg-primary-dull transition rounded-full font-medium cursor-pointer"
-          >
-            Login
-          </button>
-        ) : (
-          <UserButton>
-            <div className="flex items-center">
-              <img
-                src={user.imageUrl}
-                alt={user.firstName || "User"}
-                className="w-10 h-10 rounded-full mr-2"
-              />
-              <span className="text-lg">{user.firstName}</span>
-            </div>
-          </UserButton>
-        )}
+    <div className="flex">
+      <Sidebar />
+      <main className="flex-1 p-6 bg-gray-50">
+        <HeaderStats />
+        {/* Next: Add Workflow Cards and RecentActivity */}
+      </main>
     </div>
   );
 };
