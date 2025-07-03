@@ -11,7 +11,7 @@ const HeaderStats = () => {
 
   {/* Greeting */}
   <h1 className="text-2xl font-semibold mb-4">
-    Hi{user?.firstName ? `, ${user.firstName}` : ""}
+    Hi{user?.firstName ? `, ${user.firstName}!` : " there!"}
   </h1>
 
   {/* Horizontal Stat Cards */}
