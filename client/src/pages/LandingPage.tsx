@@ -8,7 +8,7 @@ const LandingPage = () => {
       <nav className="absolute top-0 left-0 w-full flex justify-between items-center p-6 px-10 text-white">
           <h1 className="text-2xl font-bold">FlowMancer</h1> {" "}
         <Link
-          to="/login"
+          to="/auth"
           className="text-blue-400 hover:text-blue-500 transition"
         >
               Login  {" "}
@@ -22,7 +22,7 @@ const LandingPage = () => {
           FlowMancer connects your email to powerful AI tools to extract data,
           summarize, and send it wherever you need.
         </p>
-        <Link to="/signup" className="mt-4">
+        <Link to="/auth" className="mt-4">
           <button className="bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-xl text-lg font-medium transition">
             Get Started
           </button>

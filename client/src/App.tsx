@@ -7,6 +7,7 @@ import Dashboard from "./pages/Dashboard";
 import Logs from "./pages/Logs";
 import WorkflowBuilder from "./pages/WorkflowBuilder";
 import { supabase } from "./lib/supabase";
+import Auth from "./pages/Auth";
 
 const App = () => {
   const [loading, setLoading] = useState(true);
@@ -36,6 +37,7 @@ const App = () => {
       <Route path="/" element={<LandingPage />} />
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<SignUp />} />
+    <Route path="/auth" element={<Auth />} />
 
       <Route
         path="/dashboard"
