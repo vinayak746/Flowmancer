@@ -1,17 +1,16 @@
-import { UserButton, useUser } from "@clerk/clerk-react";
 
 const HeaderStats = () => {
-  const { user } = useUser();
+  
   return (
 <div className="w-full mb-8 relative">
   {/* User Button at top right */}
   <div className="absolute top-0 right-0">
-    <UserButton />
+   
   </div>
 
   {/* Greeting */}
   <h1 className="text-2xl font-semibold mb-4">
-    Hi{user?.firstName ? `, ${user.firstName}!` : " there!"}
+    Hi there
   </h1>
 
   {/* Horizontal Stat Cards */}
