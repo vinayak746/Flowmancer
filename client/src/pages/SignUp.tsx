@@ -1,12 +1,32 @@
-import { SignUp } from "@clerk/clerk-react";
+import { useState } from 'react'
+import { supabase } from '../lib/supabase'
 
-const SignUpPage = () => {
-  
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-            <SignUp path="/signup" routing="path" afterSignUpUrl={'/dashboard'} />   {" "}
-    </div>
-  );
-};
+const SignUp = () => {
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [message, setMessage] = useState('')
 
-export default SignUpPage;
+  const handleSignup = async (e: React.FormEvent) => {
+    e.preventDefault()
+    const { error } = await supabase.auth.signUp({
+      email,
+      password
+    })
+    if (error) setMessage(error.message)
+    else setMessage('Check your email for the confirmation link!')
+  }
+
+  return (
+    <div>
+      <h1>Sign Up</h1>
+      <form onSubmit={handleSignup}>
+        <input type="email" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} />
+        <input type="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} />
+        <button type="submit">Sign Up</button>
+      </form>
+      <p>{message}</p>
+    </div>
+  )
+}
+
+export default SignUp
