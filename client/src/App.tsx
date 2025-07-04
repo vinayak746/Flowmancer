@@ -1,80 +1,56 @@
-import { Route, Routes } from "react-router-dom";
-import "./App.css";
+import { useEffect, useState } from "react";
+import { Route, Routes, Navigate } from "react-router-dom";
 import LandingPage from "./pages/LandingPage";
 import Login from "./pages/Login";
+import SignUp from "./pages/SignUp";
 import Dashboard from "./pages/Dashboard";
 import Logs from "./pages/Logs";
 import WorkflowBuilder from "./pages/WorkflowBuilder";
-import SignUpPage from "./pages/SignUp";
+import { supabase } from "./lib/supabase";
 
-import {
-  SignedIn,
-  SignedOut,
-  RedirectToSignIn,
-  SignIn,
-  SignUp,
-  UserProfile
-} from "@clerk/clerk-react";
+const App = () => {
+  const [loading, setLoading] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-function App() {
+  useEffect(() => {
+    const checkAuth = async () => {
+      const { data } = await supabase.auth.getSession();
+      setIsAuthenticated(!!data.session);
+      setLoading(false);
+    };
+
+    checkAuth();
+
+    // Optional: Listen for login/logout events
+    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
+      setIsAuthenticated(!!session);
+    });
+
+    return () => listener?.subscription.unsubscribe();
+  }, []);
+
+  if (loading) return <div className="text-center mt-10">Loading...</div>;
+
   return (
-    <div>
-      <Routes>
-        {/* Public Routes */}
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<SignUpPage />} />
+    <Routes>
+      <Route path="/" element={<LandingPage />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/signup" element={<SignUp />} />
 
-        {/* Clerk auth pages */}
-        <Route path="/sign-in/*" element={<SignIn routing="path" path="/sign-in" />} />
-        <Route path="/sign-up/*" element={<SignUp routing="path" path="/sign-up" />} />
-        <Route path="/user/*" element={<UserProfile routing="path" path="/user" />} />
-
-        {/* Protected Routes */}
-        <Route
-          path="/dashboard"
-          element={
-            <>
-              <SignedIn>
-                <Dashboard />
-              </SignedIn>
-              <SignedOut>
-                <RedirectToSignIn />
-              </SignedOut>
-            </>
-          }
-        />
-
-        <Route
-          path="/logs"
-          element={
-            <>
-              <SignedIn>
-                <Logs />
-              </SignedIn>
-              <SignedOut>
-                <RedirectToSignIn />
-              </SignedOut>
-            </>
-          }
-        />
-
-        <Route
-          path="/workflow-builder"
-          element={
-            <>
-              <SignedIn>
-                <WorkflowBuilder />
-              </SignedIn>
-              <SignedOut>
-                <RedirectToSignIn />
-              </SignedOut>
-            </>
-          }
-        />
-      </Routes>
-    </div>
+      <Route
+        path="/dashboard"
+        element={isAuthenticated ? <Dashboard /> : <Navigate to="/login" />}
+      />
+      <Route
+        path="/logs"
+        element={isAuthenticated ? <Logs /> : <Navigate to="/login" />}
+      />
+      <Route
+        path="/workflow-builder"
+        element={isAuthenticated ? <WorkflowBuilder /> : <Navigate to="/login" />}
+      />
+    </Routes>
   );
-}
+};
 
 export default App;
